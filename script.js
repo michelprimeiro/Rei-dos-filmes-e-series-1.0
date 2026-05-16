@@ -408,4 +408,7 @@ function filterLanguage(lang) {
 
     // Executa a filtragem combinada
     handleSearch();
-}
+}// Forçar o site a carregar todos os filmes e séries assim que a página abrir
+window.addEventListener('DOMContentLoaded', () => {
+    handleSearch();
+});
