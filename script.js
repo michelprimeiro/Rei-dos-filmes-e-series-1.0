@@ -60,7 +60,7 @@ const seriesDatabase = {
         image: "https://media.themoviedb.org/t/p/w300_and_h450_face/tOLZpg3fxxdbkkMZWT3WfOM5d4k.jpg",
         seasons: { "1": 2 }
     }
-}; // <-- Este fecha a constante seriesDatabase que abre lá em cima!
+};
 
 const moviesDatabase = {
     "299534": { name: "Vingadores: Ultimato", image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400" },
@@ -80,6 +80,8 @@ let activeType = "dub";
 window.addEventListener('DOMContentLoaded', () => {
     const session = localStorage.getItem('active_session');
     if (session) loginSuccess(session);
+    // Gatilho para carregar o catálogo na primeira abertura
+    handleSearch();
 });
 
 // ================= SISTEMA DE CONTROLE DE ACESSO =================
@@ -329,8 +331,9 @@ function clearHistory() {
     localStorage.removeItem(`streaming_history_${currentUser}`);
     renderHistory();
 }
+
 // ============================================================================
-// COLA ISTO NO FINAL DO TEU SCRIPT.JS - SISTEMA DE PESQUISA, CATEGORIAS E IDIOMAS
+// SISTEMA DE PESQUISA, CATEGORIAS E IDIOMAS
 // ============================================================================
 
 // Filtros Globais Ativos
@@ -339,7 +342,8 @@ let activeLanguageFilter = "all";
 
 // 1. ENGINE DA LUPA DE PESQUISA EM TEMPO REAL
 function handleSearch() {
-    const searchQuery = document.getElementById('searchBar').value.toLowerCase().trim();
+    const searchBarElement = document.getElementById('searchBar');
+    const searchQuery = searchBarElement ? searchBarElement.value.toLowerCase().trim() : '';
     const cards = document.querySelectorAll('#catalogGrid .card');
 
     cards.forEach(card => {
@@ -347,16 +351,10 @@ function handleSearch() {
         const category = card.getAttribute('data-category') || '';
         const lang = card.getAttribute('data-lang') || '';
 
-        // Valida se o card atende à pesquisa por texto
         const matchesSearch = title.includes(searchQuery);
-        
-        // Valida se o card atende à categoria ativa do menu
         const matchesCategory = (activeCategoryFilter === "all" || category === activeCategoryFilter);
-        
-        // Valida se o card atende ao idioma selecionado
         const matchesLanguage = (activeLanguageFilter === "all" || lang === activeLanguageFilter || lang === "both");
 
-        // Só mostra se passar em todas as regras ao mesmo tempo
         if (matchesSearch && matchesCategory && matchesLanguage) {
             card.style.display = "block";
         } else {
@@ -372,7 +370,6 @@ function filterCategory(category) {
     const banner = document.getElementById('homeBanner');
     const catalogTitle = document.getElementById('catalogTitle');
 
-    // Atualiza os títulos da página e esconde o banner gigante se não for a Home ('all')
     if (category === 'all') {
         if(banner) banner.style.display = "flex";
         if(catalogTitle) catalogTitle.innerText = "Todos os Títulos";
@@ -385,11 +382,9 @@ function filterCategory(category) {
         }
     }
 
-    // Fecha o menu responsivo no celular após clicar
     const navMenuElement = document.getElementById('navMenu');
     if (navMenuElement) navMenuElement.classList.remove('active');
 
-    // Executa a filtragem combinada
     handleSearch();
 }
 
@@ -397,18 +392,17 @@ function filterCategory(category) {
 function filterLanguage(lang) {
     activeLanguageFilter = lang;
 
-    // Gerencia as classes ativas dos botões visuais de idioma
-    document.getElementById('filterAllLang').classList.remove('active');
-    document.getElementById('filterDub').classList.remove('active');
-    document.getElementById('filterLeg').classList.remove('active');
+    const fAll = document.getElementById('filterAllLang');
+    const fDub = document.getElementById('filterDub');
+    const fLeg = document.getElementById('filterLeg');
 
-    if (lang === 'all') document.getElementById('filterAllLang').classList.add('active');
-    if (lang === 'dub') document.getElementById('filterDub').classList.add('active');
-    if (lang === 'leg') document.getElementById('filterLeg').classList.add('active');
+    if (fAll) fAll.classList.remove('active');
+    if (fDub) fDub.classList.remove('active');
+    if (fLeg) fLeg.classList.remove('active');
 
-    // Executa a filtragem combinada
+    if (lang === 'all' && fAll) fAll.classList.add('active');
+    if (lang === 'dub' && fDub) fDub.classList.add('active');
+    if (lang === 'leg' && fLeg) fLeg.classList.add('active');
+
     handleSearch();
-}// Forçar o site a carregar todos os filmes e séries assim que a página abrir
-window.addEventListener('DOMContentLoaded', () => {
-    handleSearch();
-});
+}
