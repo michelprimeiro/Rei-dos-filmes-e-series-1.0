@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rei dos Filmes e Séries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo" onclick="filterCategory('all')" style="cursor: pointer;">Rei dos Filmes e Séries</div>
+        
+        <div class="search-container">
+            <input type="text" id="searchBar" placeholder="Pesquisar títulos..." oninput="handleSearch()">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <nav class="nav-menu" id="navMenu">
+            <a href="#" class="nav-link" onclick="filterCategory('all')">Home</a>
+            <a href="#" class="nav-link" onclick="filterCategory('filme')">Filmes</a>
+            <a href="#" class="nav-link" onclick="filterCategory('serie')">Séries</a>
+            <a href="#" class="nav-link" onclick="filterCategory('anime')">Animes/Desenhos</a>
+            <a href="#contato" class="nav-link">Contato</a>
+        </nav>
+        
+        <div class="nav-controls">
+            <span id="userWelcome" class="user-welcome"></span>
+            <button id="themeToggle" class="btn-theme" title="Alternar Tema">Luminary 🌓</button>
+            <button id="logoutBtn" class="btn-logout" style="display: none;">Sair</button>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </header>
+
+    <main id="mainContent" class="content-hidden">
+        
+        <section id="homeBanner" class="hero" style="background-image: linear-gradient(to top, var(--bg-color), transparent), url('https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=1920');">
+            <div class="hero-content">
+                <h1>The Boys</h1>
+                <p>Na terra onde super-heróis são gerenciados por corporações e escondem segredos obscuros, um grupo de humanos sem poderes se une para derrubar os heróis corrompidos.</p>
+                <div class="hero-buttons">
+                    <button class="btn-play dub" onclick="openPlayer('76479', '1', '1', 'dub')">► Assistir Dublado 🇧🇷</button>
+                    <button class="btn-play leg" onclick="openPlayer('76479', '1', '1', 'leg')">► Assistir Legendado 🇺🇸</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="lang-filter-bar">
+            <button class="btn-lang-filter active" id="filterAllLang" onclick="filterLanguage('all')">Todos os Idiomas</button>
+            <button class="btn-lang-filter" id="filterDub" onclick="filterLanguage('dub')">Apenas Dublados 🇧🇷</button>
+            <button class="btn-lang-filter" id="filterLeg" onclick="filterLanguage('leg')">Apenas Legendados 🇺🇸</button>
+        </div>
+
+        <section id="historicoSection" class="catalog-section" style="display: none;">
+            <div class="section-header-flex">
+                <h2>Continuar Assistindo</h2>
+                <button onclick="clearHistory()" class="btn-clear-history">Limpar Histórico</button>
+            </div>
+            <div id="historicoGrid" class="grid-cards"></div>
+        </section>
+
+        <section class="catalog-section">
+            <h2 id="catalogTitle">Todos os Títulos</h2>
+            <div id="catalogGrid" class="grid-cards">
+                
+                <div class="card" data-title="vingadores ultimato" data-category="filme" data-lang="dub" onclick="openPlayer('299534', null, null, 'dub')">
+                    <img src="https://media.themoviedb.org/t/p/w94_and_h141_face/9fRX8UKlIW7Lb9GqNsJVakWWFCi.jpg" alt="Vingadores">
+                    <div class="card-info">
+                        <h3>Vingadores: Ultimato</h3>
+                        <span class="badge dub">DUBLADO</span>
+                    </div>
+                </div>
+
+                <div class="card" data-title="homem-aranha sem volta para casa" data-category="filme" data-lang="dub" onclick="openPlayer('634649', null, null, 'dub')">
+                    <img src="https://media.themoviedb.org/t/p/w94_and_h141_face/xaKydnMw6wR1MBAjS5seGPVusbs.jpg" alt="Homem Aranha">
+                    <div class="card-info">
+                        <h3>Homem-Aranha: Sem Volta...</h3>
+                        <span class="badge dub">DUBLADO</span>
+                    </div>
+                </div>
+
+                <div class="card" data-title="missão refúgio" data-category="filme" data-lang="dub" onclick="openPlayer('1290821', null, null, 'dub')">
+                    <img src="https://media.themoviedb.org/t/p/w220_and_h330_face/hSvhZRkbYD9crC4nqy8uCk9EdFH.jpg" alt="Missão Refúgio">
+                    <div class="card-info">
+                        <h3>Missão Refúgio (2026)</h3>
+                        <span class="badge dub">DUBLADO</span>
+                    </div>
+                </div>
+
+                <div class="card" data-title="super mario galaxy o filme" data-category="filme" data-lang="dub" onclick="openPlayer('1226863', null, null, 'dub')">
+                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_face/b3WeTp42eJSRuE4UZfyPCOJW4c.jpg" alt="Super Mario Galaxy">
+                    <div class="card-info">
+                        <h3>Super Mario Galaxy: O Filme</h3>
+                        <span class="badge dub">DUBLADO</span>
+                    </div>
+                </div>
+
+                <div class="card" data-title="the boys" data-category="serie" data-lang="both" onclick="openPlayer('76479', '1', '1', 'dub')">
+                    <img src="https://media.themoviedb.org/t/p/w58_and_h87_face/in1R2dDc421JxsoRWaIIAqVI2KE.jpg" alt="The Boys">
+                    <div class="card-info">
+                        <h3>The Boys</h3>
+                        <span class="badge leg">LENDANDADO</span>
+                    </div>
+                </div>
+
+                <div class="card" data-title="dragon ball super" data-category="anime" data-lang="dub" onclick="openPlayer('62715', '1', '1', 'dub')">
+                    <img src="https://media.themoviedb.org/t/p/w94_and_h141_face/cQDCIp92rTzTnd8mjb1syLhrAqy.jpg" alt="Dragon Ball">
+                    <div class="card-info">
+                        <h3>Dragon Ball Super</h3>
+                        <span class="badge dub">DUBLADO</span>
+                    </div>
+                </div>
+
+                <div class="card" data-title="jujutsu kaisen" data-category="anime" data-lang="both" onclick="openPlayer('95479', '1', '1', 'dub')">
+                    <img src="https://media.themoviedb.org/t/p/w220_and_h330_face/8R1mMSC1gX1cg5ed7ns49JOEqw3.jpg" alt="Jujutsu Kaisen">
+                    <div class="card-info">
+                        <h3>Jujutsu Kaisen</h3>
+                        <span class="badge dub">DUBLADO / LEG</span>
+                    </div>
+                </div>
+
+                <div class="card" data-title="mushoku tensei" data-category="anime" data-lang="both" onclick="openPlayer('94664', '1', '1', 'dub')">
+                    <img src="https://media.themoviedb.org/t/p/w130_and_h195_face/4vEel9ztoC3PtQFOkthVPtdlWQr.jpg" alt="Mushoku Tensei">
+                    <div class="card-info">
+                        <h3>Mushoku Tensei</h3>
+                        <span class="badge dub">DUBLADO / LEG</span>
+                    </div>
+                </div>
+
+                <div class="card" data-title="devil may cry" data-category="anime" data-lang="both" onclick="openPlayer('235930', '1', '1', 'dub')">
+                    <img src="https://media.themoviedb.org/t/p/w220_and_h330_face/75KximV3WhtvlWFneTrf1Pw61cu.jpg" alt="Devil May Cry">
+                    <div class="card-info">
+                        <h3>Devil May Cry (2025)</h3>
+                        <span class="badge dub">DUBLADO / LEG</span>
+                    </div>
+                </div>
+               
+                <div class="card" data-title="invencível" data-category="anime" data-lang="dub" onclick="openPlayer('95557', '1', '1', 'dub')">
+                     <img src="https://media.themoviedb.org/t/p/w220_and_h330_face/qhb7RWU9ad9a5m3HbeRRXzjaMXf.jpg" alt="Invencível">
+                     <div class="card-info">
+                          <h3>INVENCÍVEL</h3>
+                          <span class="badge dub">DUBLADO</span>
+                     </div>
+                   </div>
+                   <div class="card" data-title="demon slayer kimetsu no yaiba castelo infinito" data-category="filme" data-lang="dub" onclick="openPlayer('131103', null, null, 'dub')">
+    <img src="https://media.themoviedb.org/t/p/w300_and_h450_face/c55sXCaQBj3vuHqZe62tv90xCQS.jpg" alt="Demon Slayer Castelo Infinito">
+    <div class="card-info">
+        <h3>Demon Slayer: Castelo Infinito</h3>
+        <span class="badge dub">DUBLADO</span>
+    </div>
+</div>
+<div class="card" data-title="bonnie e clyde" data-category="serie" data-lang="dub" onclick="openPlayer('62829', '1', '1', 'dub')">
+    <img src="https://media.themoviedb.org/t/p/w300_and_h450_face/tOLZpg3fxxdbkkMZWT3WfOM5d4k.jpg" alt="Bonnie e Clyde">
+    <div class="card-info">
+        <h3>Bonnie e Clyde</h3>
+        <span class="badge leg">LENGENDADO</span>
+    </div>
+</div>
+            </div>
+        </section>
+
+        <section id="contato" class="contact-section">
+            <h2>Contato</h2>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Mensagem enviada com sucesso!');">
+                <input type="text" placeholder="Seu Nome" required>
+                <input type="email" placeholder="Seu E-mail" required>
+                <textarea placeholder="Sua Mensagem" rows="5" required></textarea>
+                <button type="submit">Enviar</button>
+            </form>
+        </section>
+    </main>
+
+    <div id="authModal" class="modal">
+        <div class="modal-content auth-box">
+            <div class="auth-tabs-nav">
+                <button id="tabLogin" class="auth-tab-btn active" onclick="switchAuthTab('login')">Entrar</button>
+                <button id="tabRegister" class="auth-tab-btn" onclick="switchAuthTab('register')">Cadastrar</button>
+            </div>
+
+            <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+                <p class="auth-desc">Faça login para salvar as suas preferências de reprodução.</p>
+                <input type="text" id="loginUser" placeholder="Usuário" required>
+                <input type="password" id="loginPass" placeholder="Senha" required>
+                <button type="submit" class="btn-auth-submit">Entrar</button>
+            </form>
+
+            <form id="registerForm" class="auth-form form-hidden" onsubmit="handleRegister(event)">
+                <p class="auth-desc">Crie uma conta para obter um histórico exclusivo.</p>
+                <input type="text" id="regUser" placeholder="Defina o seu Usuário" required>
+                <input type="password" id="regPass" placeholder="Defina a sua Senha" required>
+                <button type="submit" class="btn-auth-submit">Criar Conta</button>
+            </form>
+
+            <div class="auth-divider">ou</div>
+            <button id="guestBtn" class="btn-guest" onclick="enterAsGuest()">Entrar como Convidado</button>
+        </div>
+    </div>
+
+    <div id="videoPlayerModal" class="modal">
+        <div class="modal-content player-box">
+            <span class="close-player" onclick="closePlayer()">&times;</span>
+            <div class="video-container">
+                <iframe id="megaIframe" src="" frameborder="0" allowfullscreen scrolling="no"></iframe>
+            </div>
+            <div id="seriesManager" class="series-manager" style="display: none;">
+                <div class="player-lang-selector">
+                    <button id="playerBtnDub" class="lang-tab active" onclick="switchPlayerType('dub')">Dublado 🇧🇷</button>
+                    <button id="playerBtnLeg" class="lang-tab" onclick="switchPlayerType('leg')">Legendado 🇺🇸</button>
+                </div>
+                <div id="seasonTabs" class="season-tabs"></div>
+                <div id="episodesGrid" class="episodes-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
